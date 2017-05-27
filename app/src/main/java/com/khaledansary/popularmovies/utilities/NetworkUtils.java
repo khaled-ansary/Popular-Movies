@@ -79,6 +79,7 @@ public class NetworkUtils extends AsyncTask<String, Void, String> {
         }
     }
 
+
     private static String convertToString(InputStream is) throws IOException {
         BufferedReader r = new BufferedReader(new InputStreamReader(is));
         StringBuilder total = new StringBuilder();
