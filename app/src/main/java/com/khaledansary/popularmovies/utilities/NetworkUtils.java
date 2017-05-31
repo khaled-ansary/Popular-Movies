@@ -17,6 +17,11 @@ package com.khaledansary.popularmovies.utilities;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,37 +30,56 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Khaled on 29/01/2017.
  * These utilities will be used to communicate with the network.
  */
-public class NetworkUtils extends AsyncTask<String, Void, String> {
+public class NetworkUtils  {
 
+    public static String getApiResponse(URL url){
 
-    private  DownloadCompleteListener mDownloadCompleteListener;
+        OkHttpClient client = new OkHttpClient();
+        client.setConnectTimeout(6, TimeUnit.SECONDS);
+        client.setReadTimeout(6, TimeUnit.SECONDS);
+        client.setWriteTimeout(6, TimeUnit.SECONDS);
 
-    public NetworkUtils(DownloadCompleteListener downloadCompleteListener) {
-        this.mDownloadCompleteListener = downloadCompleteListener;
-    }
-
-    @Override
-    protected String doInBackground(String... params) {
-        try {
-            return getResponseFromHttpUrl(buildUrl(Constants.APIConstants.API_KEY));
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+        try{
+            Response response = client.newCall(request).execute();
+            // Log.d("Response code: ",""+response);
+            return response.body().string();
+            // Log.d("post List size:: ",""+postList.size());
         } catch (IOException e) {
             e.printStackTrace();
-            return null;
+            Log.d("URL not connected: ",""+e);
+        }catch (Exception en) {
+            System.out.println("End of content" + en);
         }
+        return null;
     }
 
-    public static URL buildUrl(String apiKey) {
-        Uri builtUri = Uri.parse(Constants.APIConstants.BASE_URL).buildUpon()
-                .appendQueryParameter(Constants.APIConstants.APP_KEY_QUERY_PARAM, apiKey)
-                .build();
+    public static URL buildUrl(String sortValue, String page) {
 
-        URL url = null;
+        Uri builtUri = null; URL url = null;
+        if(sortValue.equals(Constants.APIConstants.GET_POPULAR)){
+            builtUri = Uri.parse(Constants.APIConstants.BASE_URL+Constants.APIConstants.GET_POPULAR).buildUpon()
+                    .appendQueryParameter(Constants.APIConstants.API_KEY, "")
+                    .appendQueryParameter(Constants.APIConstants.SET_LANGUAGE, "en-US")
+                    .appendQueryParameter(Constants.APIConstants.PAGE, page)
+                    .build();
+        }else if(sortValue.equals(Constants.APIConstants.GET_TOP_RATED)){
+             builtUri = Uri.parse(Constants.APIConstants.BASE_URL+Constants.APIConstants.GET_TOP_RATED).buildUpon()
+                     .appendQueryParameter(Constants.APIConstants.API_KEY, "")
+                    .appendQueryParameter(Constants.APIConstants.SET_LANGUAGE, "en-US")
+                    .appendQueryParameter(Constants.APIConstants.PAGE, page)
+                    .build();
+        }
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
@@ -63,32 +87,5 @@ public class NetworkUtils extends AsyncTask<String, Void, String> {
         }
         return url;
     }
-
-
-    public static String getResponseFromHttpUrl(URL url) throws IOException {
-        InputStream inputStream = null;
-        HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-        try {
-            inputStream = urlConnection.getInputStream();
-            return convertToString(inputStream);
-        } finally {
-            if (inputStream !=null){
-                inputStream.close();
-            }
-            urlConnection.disconnect();
-        }
-    }
-
-
-    private static String convertToString(InputStream is) throws IOException {
-        BufferedReader r = new BufferedReader(new InputStreamReader(is));
-        StringBuilder total = new StringBuilder();
-        String line;
-        while ((line = r.readLine()) != null) {
-            total.append(line);
-        }
-        return new String(total);
-    }
-
 
 }
