@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bwq="http://schemas.android.com/apk/res-auto">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/menu_item"
-        app:showAsAction="ifRoom"
-        android:title="Filter"
-        bwq:actionProviderClass="android.support.v7.widget.ShareActionProvider" />
+        android:id="@+id/popular"
+        app:showAsAction="never"
+        android:title="@string/filter_by_popular"
+       />
+    <item
+        android:id="@+id/highest_rated"
+        app:showAsAction="never"
+        android:title="@string/filter_by_highest_rated" />
 
 </menu>

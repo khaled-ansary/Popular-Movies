@@ -1,85 +1,81 @@
 package com.khaledansary.popularmovies.adapters;
 
 
+
+import com.bumptech.glide.Glide;
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.khaledansary.popularmovies.DetailsActivity;
 import com.khaledansary.popularmovies.Holders.MovieHolder;
 import com.khaledansary.popularmovies.Models.Movie;
 import com.khaledansary.popularmovies.R;
-
 import java.util.List;
 
 /**
- * Created by Khaled on 29/01/2017.
+ * Created by Khaled
  */
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
 
-public class MovieAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+    private Context context;
+    private List<Movie> movies;
 
-    private Context mContext;
-    private List<Movie> movieList;
-    private Movie movie;
-
-    private final int MOVIE = 0;
-
-
-    public MovieAdapter(Context context, List<Movie> movieList){
-        this.mContext = mContext;
-        this.movieList = movieList;
+    public MovieAdapter(Context context, List<Movie> movies) {
+        this.context = context;
+        this.movies = movies;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        RecyclerView.ViewHolder viewHolder;
-        LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_items,parent,false);
 
-        View movieHolder = inflater.inflate(R.layout.movie_items, viewGroup, false);
-        viewHolder = new MovieHolder(movieHolder);
-
-        return viewHolder;
+        return new ViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position) {
-        MovieHolder movieHolder = (MovieHolder) viewHolder;
-        configureMovieHolder(movieHolder, position);
-    }
+    public void onBindViewHolder(ViewHolder holder, final int position) {
 
-    private void configureMovieHolder(MovieHolder movieHolder, int position){
-
-        final Movie movie = (Movie) movieList.get(position);
-        if(movie != null){
-
-
-            Glide.with(mContext).load(movie.getPoster_path()).into(movieHolder.moviePoster);
-
-            movieHolder.moviePoster.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                     Toast.makeText(mContext, "Picture click"+ movie.getId(), Toast.LENGTH_SHORT).show();
-                    //Intent post_intent = new Intent(mContext, PageActivity.class);
-                    //post_intent.putExtra("post_title",post.getPost_title());
-
-                    //mContext.startActivity(post_intent);
-                    //showPopupMenu(holder.thumbnail);
-                    // Toast.makeText(view, "imageIV onClick at" + position, Toast.LENGTH_SHORT).show();
-                }
-            });
-
-        }
+        Glide.with(context).load(movies.get(position).getPoster_path()).into(holder.imageView);
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent movie_details = new Intent(context, DetailsActivity.class);
+                movie_details.putExtra("id", movies.get(position).getId());
+                movie_details.putExtra("title", movies.get(position).getTitle());
+                movie_details.putExtra("poster_path", movies.get(position).getPoster_path());
+                movie_details.putExtra("overview", movies.get(position).getOverview());
+                movie_details.putExtra("release_date", movies.get(position).getRelease_date());
+                movie_details.putExtra("vote_average", movies.get(position).getVote_average());
+                context.startActivity(movie_details);
+            }
+        });
 
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return movies.size();
+    }
+
+    public  class ViewHolder extends  RecyclerView.ViewHolder{
+
+        public ImageView imageView;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            imageView = (ImageView) itemView.findViewById(R.id.thumbnail);
+        }
     }
 }
