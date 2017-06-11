@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.khaledansary.popularmovies.DetailsActivity"
+    >
+
+        <ScrollView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:weightSum="1">
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:id="@+id/title"
+                    android:textSize="20dp"
+                    android:inputType="textMultiLine"
+                    tools:textStyle="bold"
+                    android:drawablePadding="15dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textStyle="normal|bold"
+                    android:layout_margin="10dp"
+                    tools:textAlignment="gravity" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/activity_vertical_margin"
+                    android:orientation="horizontal"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/detail_activity_image_width"
+                        android:layout_height="@dimen/detail_activity_image_height"
+                        android:id="@+id/poster"
+                        android:paddingBottom="10dp" android:paddingRight="10dp"
+                        android:cropToPadding="false"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/activity_vertical_margin"
+                        android:orientation="vertical"
+                        >
+                        <TextView
+                            android:id="@+id/release_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            />
+                        <TextView
+                            android:id="@+id/average_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="10dp"
+                            />
+                     </LinearLayout>
+                    />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:background="@drawable/dotted_line" />
+
+                <TextView
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/overview"
+                    android:textAlignment="gravity"
+                    android:lineSpacingExtra="6sp"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:inputType="textMultiLine"
+
+                    />
+
+            </LinearLayout>
+        </ScrollView>
+</RelativeLayout>
+
